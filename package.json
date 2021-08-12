@@ -1,0 +1,22 @@
+{
+  "name": "no_game",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shangrex/No_Game.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/shangrex/No_Game/issues"
+  },
+  "homepage": "https://github.com/shangrex/No_Game#readme",
+  "dependencies": {
+    "react": "^17.0.2"
+  }
+}
