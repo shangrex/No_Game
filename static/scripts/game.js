@@ -10,6 +10,17 @@ class Example extends Phaser.Scene
         this.mouseY = 0;
     }
 
+    hit (mouseX, mouseY) {
+        console.log(mouseX, mouseY);
+
+        if(mouseX <  this.charc.x + 20 & mouseX > this.charc.x - 20 & 
+            mouseY < this.charc.y + 20 & mouseY > this.charc.y - 20){
+            console.log('hit');
+            // console.log("charc", this.charc.x, this.charc.y);
+            // console.log(this.mouseX, this.mouseY);
+        }
+    }
+
     preload ()
     {
         this.load.image('sight', 'https://i.imgur.com/cwkNzG4.png');
@@ -22,21 +33,20 @@ class Example extends Phaser.Scene
         this.charc = this.add.sprite(400, 500, 'mushroom').setDepth(1);
 
         const group = this.add.group();
-        this.sight = this.add.image(10, 10, 'sight').setScale(0.1);
+        this.sight = this.add.image(10, 10, 'sight').setScale(0.1).setDepth(2);
         group.add(this.sight);
 
         cursors = this.input.keyboard.createCursorKeys();
         
-        speed = Phaser.Math.GetSpeed(300, 1);
+        speed = Phaser.Math.GetSpeed(200, 1);
 
         this.input.on('pointerdown', function (pointer) {
             this.mouseX = pointer.x;
             this.mouseY = pointer.y;
-            // console.log(this.mouseX, this.mouseY);
-            // this.sight.x = this.mouseX;
-            // this.sight.y = this.mouseY;
+            console.log("click", this.mouseX, this.mouseY);
             Phaser.Actions.SetXY(group.getChildren(), this.mouseX, this.mouseY);
-
+            gx = pointer.x;
+            gy = pointer.y;
         });
 
         this.input.keyboard.on('keydown_W', this.movement, this);
@@ -72,11 +82,13 @@ class Example extends Phaser.Scene
             // this.charc.x += speed * delta;
             this.direction = 'right';
         }
-
+  
     }
+
 
     update (time, delta)
     {
+        this.hit(gx, gy);
         if (cursors.left.isDown)
         {
             this.charc.x -= speed * delta;
@@ -91,7 +103,6 @@ class Example extends Phaser.Scene
         else if(cursors.down.isDown){
             this.charc.y += speed * delta;
         }
-
         if(this.direction == 'up'){
             this.charc.y -= speed * delta;
         }
@@ -113,5 +124,7 @@ const config = {
 
 var speed;
 var cursors;
+
+var gx, gy;
 
 const game = new Phaser.Game(config);
