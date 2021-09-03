@@ -32,13 +32,21 @@ class Example extends Phaser.Scene
 
         this.charc = this.add.sprite(400, 500, 'mushroom').setDepth(1);
 
+        // Scale the target picture
         const group = this.add.group();
         this.sight = this.add.image(10, 10, 'sight').setScale(0.1).setDepth(2);
         group.add(this.sight);
 
+        // create cursors objects to handel character movements
         cursors = this.input.keyboard.createCursorKeys();
         
         speed = Phaser.Math.GetSpeed(200, 1);
+
+        this.input.on('pointermove', function (pointer) {
+            this.mouseX = pointer.x;
+            this.mouseY = pointer.y;
+            Phaser.Actions.SetXY(group.getChildren(), this.mouseX, this.mouseY);
+        });
 
         this.input.on('pointerdown', function (pointer) {
             this.mouseX = pointer.x;
@@ -112,6 +120,7 @@ class Example extends Phaser.Scene
     }
 
 }
+
 
 const config = {
     type: Phaser.AUTO,

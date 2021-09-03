@@ -4,7 +4,7 @@ const app = express()
 
 
 app.get('/', function(req, res) {
-    res.sendFile('templates/game.html', {root: __dirname })
+    res.sendFile('templates/game.html', {root: __dirname });
 })
 
 app.get('/temp', function(req, res) {
