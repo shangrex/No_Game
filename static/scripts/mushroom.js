@@ -48,7 +48,7 @@ var d = 0;
 var scene;
 
 // GameObject Skeleton
-class Skeleton extends Phaser.GameObjects.Image {
+export class Skeleton extends Phaser.GameObjects.Image {
     constructor(scene, x, y, motion, direction, distance) {
         super(scene, x, y, 'skeleton', direction.offset);
 

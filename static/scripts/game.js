@@ -1,21 +1,10 @@
-// import  'mushroom.js'
+// import Phaser from 'phaser';
 
 class Example extends Phaser.Scene
 {
     constructor ()
     {
-        super();
-        this.charc;
-        this.mouseX = 0;
-        this.mouseY = 0;
-        this.machine = [];
-        this.machine_distance = [];
-        // '0' means go up
-        // '1' means go down
-        // '2' means go left
-        // '3' means go right
-        // '4' means stay
-        this.machine_way = [];
+        super('Example');
     }
 
     hit (mouseX, mouseY) {
@@ -24,9 +13,13 @@ class Example extends Phaser.Scene
         if(mouseX <  this.charc.x + 20 & mouseX > this.charc.x - 20 & 
             mouseY < this.charc.y + 20 & mouseY > this.charc.y - 20){
             console.log('hit');
+
+            return true;
+            
             // console.log("charc", this.charc.x, this.charc.y);
             // console.log(this.mouseX, this.mouseY);
         }
+        else return false;
     }
     
     random_generate(min, max){
@@ -70,7 +63,20 @@ class Example extends Phaser.Scene
 
     preload ()
     {
-        this.load.image('sight', 'https://i.imgur.com/cwkNzG4.png');
+        this.charc;
+        this.mouseX = 0;
+        this.mouseY = 0;
+        this.machine = [];
+        this.machine_distance = [];
+        // '0' means go up
+        // '1' means go down
+        // '2' means go left
+        // '3' means go right
+        // '4' means stay
+        // '5' means stay
+        this.machine_way = [];
+
+        this.load.image('sight', 'http://127.0.0.1:3000/sight');
         this.load.setBaseURL('http://labs.phaser.io');
         this.load.image('mushroom', 'assets/sprites/mushroom2.png');
     }
@@ -138,7 +144,11 @@ class Example extends Phaser.Scene
     update (time, delta)
     {
         // Gun sight collision with character detection
-        this.hit(gx, gy);
+        if(this.hit(gx, gy) == true){
+            // alert("hit");
+            // this.scene.stop("Example");
+            this.scene.start('gameover', {score: 10});
+        }
         // Character movement
         if (cursors.left.isDown)
         {
@@ -166,6 +176,41 @@ class Example extends Phaser.Scene
 
 }
 
+class gameover extends Phaser.Scene {
+
+    constructor ()
+    {
+        super('gameover');
+    }
+
+    init(data)
+    {
+        console.log('init', data);
+
+        this.score = data.score;
+    }
+
+    preload () 
+    {
+    }
+
+    create ()
+    {
+        this.scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#FFFFFF' });
+        this.text_win = this.add.text(380, 200, 'Congratulation!', { fontSize: '80px', fill: '#FFFFFF' });
+
+        const winner_text = this.add.text(300, 600).setText('Hunter Win').setScrollFactor(0);
+        winner_text.setShadow(30, 30, '#000000', 2);
+        this.add.text("enter w to continue");
+
+        this.input.keyboard.on('keydown_W', 
+            function restart(){
+                this.scene.start('Example');
+            },
+        this);
+    }
+
+}
 
 const config = {
     type: Phaser.AUTO,
@@ -173,7 +218,7 @@ const config = {
     height: 1000,
     // backgroundColor: '#2d2d2d',
     parent: 'phaser-example',
-    scene: [ Example ],
+    scene: [ Example, gameover ],
     physics: {
         default: 'arcade',
         arcade: {
